@@ -40,7 +40,14 @@
 #define DRIVE_TANK_INPUT_COMPLEX_SPEED_JOYSTICK(joy)			TVexJoysticks joy_speed = JOYSTICK(joy);
 #define DRIVE_TANK_INPUT_COMPLEX_DIRECTION_JOYSTICK(joy)	TVexJoysticks joy_direction = JOYSTICK(joy);
 
-//TODO: everything with DRIVE_X
+// Macros to be used with DRIVE_X
+#define DRIVE_X_FRONT_LEFT(n)															tMotor x_fl = MOTOR(n);
+#define DRIVE_X_FRONT_RIGHT(n)														tMotor x_fr = MOTOR(n);
+#define DRIVE_X_BACK_LEFT(n)															tMotor x_bl = MOTOR(n);
+#define DRIVE_X_BACK_RIGHT(n)															tMotor x_br = MOTOR(n);
+#define DRIVE_X_INPUT_AXIAL_JOYSTICK(joy)									TVexJoysticks joy_axial = JOYSTICK(joy);
+#define DRIVE_X_INPUT_STRAFE_JOYSTICK(joy)								TVexJoysticks joy_strafe = JOYSTICK(joy);
+#define DRIVE_X_INPUT_ROTATION_JOYSTICK(joy)							TVexJoysticks joy_rotation = JOYSTICK(joy);
 
 ///////////////////////
 // Main control code //
@@ -72,6 +79,12 @@ task main()
 			#else
 				DRIVE_TANK_RIGHT -tank_right;
 			#endif
+		#elif DRIVE_TYPE == DRIVE_X
+			sbyte x_axial = vexRT[joy_axial], x_strafe = vexRT[joy_strafe], x_rotation = vexRT[joy_rotation];
+			motor[x_fl] = CLAMP(x_rotation + x_strafe + x_axial, -127, 127);
+			motor[x_fr] = CLAMP(x_rotation + x_strafe - x_axial, -127, 127);
+			motor[x_bl] = CLAMP(x_rotation - x_strafe + x_axial, -127, 127);
+			motor[x_br] = CLAMP(x_rotation - x_strafe - x_axial, -127, 127);
 		#endif
 		sleep(10);
 	}
