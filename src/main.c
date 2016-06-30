@@ -70,7 +70,7 @@ task main()
 			#ifndef DRIVE_TANK_RIGHT
 				#error "Right drive motors must be specified by defining DRIVE_TANK_RIGHT in config.h!"
 			#else
-				DRIVE_TANK_RIGHT tank_right;
+				DRIVE_TANK_RIGHT -tank_right;
 			#endif
 		#endif
 		sleep(10);
