@@ -17,17 +17,17 @@
 
 // General useful macros
 #define MOTOR(n)																					motor##n
+#define MOTOR_OUT(n)																			motor[MOTOR(n)] =
 #define DEVICE(n)																					port##n
 #define JOYSTICK(l)																				Ch##l
 #define ARRAY_LEN(a)																			(sizeof(a) ? sizeof(a) / sizeof(a[0]) : 0)
+#define MAX(x, y)																					(x > y ? x : y)
+#define MIN(x, y)																					(x < y ? x : y)
+#define CLAMP(x, min, max)																MAX(MIN(x, max), min)
 
 // Options for DRIVE_TYPE
 #define DRIVE_TANK																				0
 #define DRIVE_X																						1
-
-// Macros to be used with DRIVE_TANK
-#define DRIVE_TANK_LEFT(motors)														int drive_left[] = { motors };
-#define DRIVE_TANK_RIGHT(motors)													int drive_right[] = { motors };
 
 // Options for DRIVE_TANK_INPUT_TYPE
 #define DRIVE_TANK_INPUT_SIMPLE			0
@@ -50,9 +50,29 @@ task main()
 {
 	// This file should contain current configuration information, created using macros defined above
 	#include "config.h"
-	#if DRIVE_TYPE == DRIVE_TANK
-		#if DRIVE_TANK_INPUT_TYPE = DRIVE_TANK_INPUT_SIMPLE
-			//TODO: grab input
+	while (true) {
+		#ifndef DRIVE_TYPE
+			#error "Drive type must be specified by defining DRIVE_TYPE in config.h!"
+		#elif DRIVE_TYPE == DRIVE_TANK
+			#ifndef DRIVE_TANK_INPUT_TYPE
+				#error "Input type must be specified by defining DRIVE_TANK_INPUT_TYPE in config.h!"
+			#elif DRIVE_TANK_INPUT_TYPE == DRIVE_TANK_INPUT_SIMPLE
+				sbyte tank_left = vexRT[joy_left], tank_right = vexRT[joy_right];
+			#elif DRIVE_TANK_INPUT_TYPE == DRIVE_TANK_INPUT_COMPLEX
+				sbyte tank_speed = vexRT[joy_speed], tank_direction = vexRT[joy_direction];
+				sbyte tank_left = CLAMP(tank_speed + tank_direction, -127, 127), tank_right = CLAMP(tank_speed - tank_direction, -127, 127);
+			#endif
+			#ifndef DRIVE_TANK_LEFT
+				#error "Left drive motors must be specified by defining DRIVE_TANK_LEFT in config.h!"
+			#else
+				DRIVE_TANK_LEFT tank_left;
+			#endif
+			#ifndef DRIVE_TANK_RIGHT
+				#error "Right drive motors must be specified by defining DRIVE_TANK_RIGHT in config.h!"
+			#else
+				DRIVE_TANK_RIGHT tank_right;
+			#endif
 		#endif
-	#endif
+		sleep(10);
+	}
 }
