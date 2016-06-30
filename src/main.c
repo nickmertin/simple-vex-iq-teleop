@@ -77,7 +77,7 @@ task main()
 			#ifndef DRIVE_TANK_RIGHT
 				#error "Right drive motors must be specified by defining DRIVE_TANK_RIGHT in config.h!"
 			#else
-				DRIVE_TANK_RIGHT tank_right;
+				DRIVE_TANK_RIGHT -tank_right;
 			#endif
 		#elif DRIVE_TYPE == DRIVE_X
 			sbyte x_axial = vexRT[joy_axial], x_strafe = vexRT[joy_strafe], x_rotation = vexRT[joy_rotation];
