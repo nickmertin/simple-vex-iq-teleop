@@ -106,9 +106,7 @@ task main()
 			motor[x_bl] = CLAMP(x_rotation - x_strafe + x_axial, -127, 127);
 			motor[x_br] = CLAMP(x_rotation - x_strafe - x_axial, -127, 127);
 			direction_sign = SIGN(x_axial);
-<<<<<<< HEAD
 			rotation_sign = SIGN(x_rotation);
-=======
 		#elif DRIVE_TYPE == DRIVE_TRIPLE
 			sbyte triple_axial = vexRT[joy_axial], triple_strafe = vexRT[joy_strafe], triple_rotation = vexRT[joy_rotation];
 			motor[triple_back] = triple_rotation - triple_strafe;
@@ -116,7 +114,6 @@ task main()
 			motor[triple_right] = triple_rotation + triple_axial + triple_strafe;
 		#else
 			#error "Unknown value for DRIVE_TYPE!"
->>>>>>> 3-wheel-holonomic-drive
 		#endif
 		sleep(10);
 	}
