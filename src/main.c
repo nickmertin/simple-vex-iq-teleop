@@ -24,14 +24,15 @@
 #define MAX(x, y)																					(x > y ? x : y)
 #define MIN(x, y)																					(x < y ? x : y)
 #define CLAMP(x, min, max)																MAX(MIN(x, max), min)
+#define SIGN(x)																						((x > 0) - (0 > x))
 
 // Options for DRIVE_TYPE
 #define DRIVE_TANK																				0
 #define DRIVE_X																						1
 
 // Options for DRIVE_TANK_INPUT_TYPE
-#define DRIVE_TANK_INPUT_SIMPLE			0
-#define DRIVE_TANK_INPUT_COMPLEX		1
+#define DRIVE_TANK_INPUT_SIMPLE														0
+#define DRIVE_TANK_INPUT_COMPLEX													1
 
 // Macros to be used with DRIVE_TANK_INPUT_SIMPLE
 #define DRIVE_TANK_INPUT_SIMPLE_JOYSTICKS(left, right)		TVexJoysticks joy_left = JOYSTICK(left), joy_right = JOYSTICK(right);
@@ -49,15 +50,19 @@
 #define DRIVE_X_INPUT_STRAFE_JOYSTICK(joy)								TVexJoysticks joy_strafe = JOYSTICK(joy);
 #define DRIVE_X_INPUT_ROTATION_JOYSTICK(joy)							TVexJoysticks joy_rotation = JOYSTICK(joy);
 
+// Macros to enable Touch LED usage
+#define TOUCH_LED_DIRECTION_BASED(n)											setTouchLEDColor(DEVICE(n), direction_sign ? (direction_sign == 1 ? colorGreen : colorRed) : colorYellow);
+
 ///////////////////////
 // Main control code //
 ///////////////////////
 
 task main()
 {
-	// This file should contain current configuration information, created using macros defined above
-	#include "config.h"
+	int direction_sign = 0;
 	while (true) {
+		// This file should contain current configuration information, created using macros defined above
+		#include "config.h"
 		#ifndef DRIVE_TYPE
 			#error "Drive type must be specified by defining DRIVE_TYPE in config.h!"
 		#elif DRIVE_TYPE == DRIVE_TANK
@@ -69,6 +74,7 @@ task main()
 				sbyte tank_speed = vexRT[joy_speed], tank_direction = vexRT[joy_direction];
 				sbyte tank_left = CLAMP(tank_speed + tank_direction, -127, 127), tank_right = CLAMP(tank_speed - tank_direction, -127, 127);
 			#endif
+			direction_sign = SIGN(tank_left + tank_right);
 			#ifndef DRIVE_TANK_LEFT
 				#error "Left drive motors must be specified by defining DRIVE_TANK_LEFT in config.h!"
 			#else
@@ -85,6 +91,7 @@ task main()
 			motor[x_fr] = CLAMP(x_rotation + x_strafe - x_axial, -127, 127);
 			motor[x_bl] = CLAMP(x_rotation - x_strafe + x_axial, -127, 127);
 			motor[x_br] = CLAMP(x_rotation - x_strafe - x_axial, -127, 127);
+			direction_sign = SIGN(x_axial);
 		#endif
 		sleep(10);
 	}
