@@ -26,9 +26,13 @@
 #define CLAMP(x, min, max)																MAX(MIN(x, max), min)
 #define SIGN(x)																						((x > 0) - (0 > x))
 
+// Control macros
+#define CONDITIONAL(c, o)																	if (c) { o }
+
 // Options for DRIVE_TYPE
 #define DRIVE_TANK																				0
 #define DRIVE_X																						1
+#define DRIVE_TRIPLE																			2
 
 // Options for DRIVE_TANK_INPUT_TYPE
 #define DRIVE_TANK_INPUT_SIMPLE														0
@@ -50,8 +54,20 @@
 #define DRIVE_X_INPUT_STRAFE_JOYSTICK(joy)								TVexJoysticks joy_strafe = JOYSTICK(joy);
 #define DRIVE_X_INPUT_ROTATION_JOYSTICK(joy)							TVexJoysticks joy_rotation = JOYSTICK(joy);
 
+// Macros to be used with DRIVE_TRIPLE
+#define DRIVE_TRIPLE_BACK(n)															tMotor triple_back = MOTOR(n);
+#define DRIVE_TRIPLE_LEFT(n)															tMotor triple_left = MOTOR(n);
+#define DRIVE_TRIPLE_RIGHT(n)															tMotor triple_right = MOTOR(n);
+#define DRIVE_TRIPLE_INPUT_AXIAL_JOYSTICK(joy)						TVexJoysticks joy_axial = JOYSTICK(joy);
+#define DRIVE_TRIPLE_INPUT_STRAFE_JOYSTICK(joy)						TVexJoysticks joy_strafe = JOYSTICK(joy);
+#define DRIVE_TRIPLE_INPUT_ROTATION_JOYSTICK(joy)					TVexJoysticks joy_rotation = JOYSTICK(joy);
+
 // Macros to enable Touch LED usage
 #define TOUCH_LED_DIRECTION_BASED(n)											setTouchLEDColor(DEVICE(n), direction_sign ? (direction_sign == 1 ? colorGreen : colorRed) : colorYellow);
+#define TOUCH_LED_BLINK(n, color1, color2)								setTouchLEDColor(DEVICE(n), (i % 2) ? color1, color2);
+
+// Macros to enable ultrasonic sensor usage
+#define ULTRASONIC(n, name)																int name = getDistanceValue(DEVICE(n));
 
 ///////////////////////
 // Main control code //
@@ -59,8 +75,8 @@
 
 task main()
 {
-	int direction_sign = 0;
-	while (true) {
+	int direction_sign = 0, rotation_sign = 0;
+	for (int i = 0; ; ++i) {
 		// This file should contain current configuration information, created using macros defined above
 		#include "config.h"
 		#ifndef DRIVE_TYPE
@@ -75,6 +91,7 @@ task main()
 				sbyte tank_left = CLAMP(tank_speed + tank_direction, -127, 127), tank_right = CLAMP(tank_speed - tank_direction, -127, 127);
 			#endif
 			direction_sign = SIGN(tank_left + tank_right);
+			rotation_sign = SIGN(tank_left - tank_right);
 			#ifndef DRIVE_TANK_LEFT
 				#error "Left drive motors must be specified by defining DRIVE_TANK_LEFT in config.h!"
 			#else
@@ -92,6 +109,14 @@ task main()
 			motor[x_bl] = CLAMP(x_rotation - x_strafe + x_axial, -127, 127);
 			motor[x_br] = CLAMP(x_rotation - x_strafe - x_axial, -127, 127);
 			direction_sign = SIGN(x_axial);
+			rotation_sign = SIGN(x_rotation);
+		#elif DRIVE_TYPE == DRIVE_TRIPLE
+			sbyte triple_axial = vexRT[joy_axial], triple_strafe = vexRT[joy_strafe], triple_rotation = vexRT[joy_rotation];
+			motor[triple_back] = triple_rotation - triple_strafe;
+			motor[triple_left] = triple_rotation - triple_axial + triple_strafe;
+			motor[triple_right] = triple_rotation + triple_axial + triple_strafe;
+		#else
+			#error "Unknown value for DRIVE_TYPE!"
 		#endif
 		sleep(10);
 	}
