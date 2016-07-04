@@ -64,7 +64,7 @@
 
 // Macros to enable Touch LED usage
 #define TOUCH_LED_DIRECTION_BASED(n)											setTouchLEDColor(DEVICE(n), direction_sign ? (direction_sign == 1 ? colorGreen : colorRed) : colorYellow);
-#define TOUCH_LED_BLINK(n, color1, color2)								setTouchLEDColor(DEVICE(n), (i % 2) ? color1, color2);
+#define TOUCH_LED_BLINK(n, color1, color2)								setTouchLEDColor(DEVICE(n), (i % 2) ? color1 : color2);
 
 // Macros to enable ultrasonic sensor usage
 #define ULTRASONIC(n, name)																int name = getDistanceValue(DEVICE(n));
