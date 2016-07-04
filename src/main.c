@@ -24,6 +24,7 @@
 #define MAX(x, y)																					(x > y ? x : y)
 #define MIN(x, y)																					(x < y ? x : y)
 #define CLAMP(x, min, max)																MAX(MIN(x, max), min)
+#define SIGN(x)																						((x > 0) - (0 > x))
 
 // Options for DRIVE_TYPE
 #define DRIVE_TANK																				0
@@ -69,6 +70,7 @@ task main()
 				sbyte tank_speed = vexRT[joy_speed], tank_direction = vexRT[joy_direction];
 				sbyte tank_left = CLAMP(tank_speed + tank_direction, -127, 127), tank_right = CLAMP(tank_speed - tank_direction, -127, 127);
 			#endif
+			direction_sign = SIGN(tank_left + tank_right);
 			#ifndef DRIVE_TANK_LEFT
 				#error "Left drive motors must be specified by defining DRIVE_TANK_LEFT in config.h!"
 			#else
@@ -85,6 +87,7 @@ task main()
 			motor[x_fr] = CLAMP(x_rotation + x_strafe - x_axial, -127, 127);
 			motor[x_bl] = CLAMP(x_rotation - x_strafe + x_axial, -127, 127);
 			motor[x_br] = CLAMP(x_rotation - x_strafe - x_axial, -127, 127);
+			direction_sign = SIGN(x_axial);
 		#endif
 		sleep(10);
 	}
