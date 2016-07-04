@@ -63,7 +63,7 @@
 
 task main()
 {
-	int direction_sign = 0;
+	int direction_sign = 0, rotation_sign = 0;
 	for (int i = 0; ; ++i) {
 		// This file should contain current configuration information, created using macros defined above
 		#include "config.h"
@@ -79,6 +79,7 @@ task main()
 				sbyte tank_left = CLAMP(tank_speed + tank_direction, -127, 127), tank_right = CLAMP(tank_speed - tank_direction, -127, 127);
 			#endif
 			direction_sign = SIGN(tank_left + tank_right);
+			rotation_sign = SIGN(tank_left - tank_right);
 			#ifndef DRIVE_TANK_LEFT
 				#error "Left drive motors must be specified by defining DRIVE_TANK_LEFT in config.h!"
 			#else
@@ -96,6 +97,7 @@ task main()
 			motor[x_bl] = CLAMP(x_rotation - x_strafe + x_axial, -127, 127);
 			motor[x_br] = CLAMP(x_rotation - x_strafe - x_axial, -127, 127);
 			direction_sign = SIGN(x_axial);
+			rotation_sign = SIGN(x_rotation);
 		#endif
 		sleep(10);
 	}
