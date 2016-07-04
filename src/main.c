@@ -30,8 +30,8 @@
 #define DRIVE_X																						1
 
 // Options for DRIVE_TANK_INPUT_TYPE
-#define DRIVE_TANK_INPUT_SIMPLE			0
-#define DRIVE_TANK_INPUT_COMPLEX		1
+#define DRIVE_TANK_INPUT_SIMPLE														0
+#define DRIVE_TANK_INPUT_COMPLEX													1
 
 // Macros to be used with DRIVE_TANK_INPUT_SIMPLE
 #define DRIVE_TANK_INPUT_SIMPLE_JOYSTICKS(left, right)		TVexJoysticks joy_left = JOYSTICK(left), joy_right = JOYSTICK(right);
