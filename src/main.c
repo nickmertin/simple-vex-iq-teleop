@@ -104,8 +104,8 @@ task main()
 		#elif DRIVE_TYPE == DRIVE_TRIPLE
 			sbyte triple_axial = vexRT[joy_axial], triple_strafe = vexRT[joy_strafe], triple_rotation = vexRT[joy_rotation];
 			motor[triple_back] = triple_rotation - triple_strafe;
-			motor[triple_left] = triple_rotation - triple_axial + triple_strafe;
-			motor[triple_right] = triple_rotation + triple_axial + triple_strafe;
+			motor[triple_left] = triple_rotation + triple_axial + triple_strafe;
+			motor[triple_right] = triple_rotation - triple_axial + triple_strafe;
 		#else
 			#error "Unknown value for DRIVE_TYPE!"
 		#endif
