@@ -50,15 +50,19 @@
 #define DRIVE_X_INPUT_STRAFE_JOYSTICK(joy)								TVexJoysticks joy_strafe = JOYSTICK(joy);
 #define DRIVE_X_INPUT_ROTATION_JOYSTICK(joy)							TVexJoysticks joy_rotation = JOYSTICK(joy);
 
+// Macros to enable Touch LED usage
+#define TOUCH_LED_DIRECTION_BASED(n)											setTouchLEDColor(DEVICE(n), direction_sign ? (direction_sign == 1 ? colorGreen : colorRed) : colorYellow);
+
 ///////////////////////
 // Main control code //
 ///////////////////////
 
 task main()
 {
-	// This file should contain current configuration information, created using macros defined above
-	#include "config.h"
+	int direction_sign = 0;
 	while (true) {
+		// This file should contain current configuration information, created using macros defined above
+		#include "config.h"
 		#ifndef DRIVE_TYPE
 			#error "Drive type must be specified by defining DRIVE_TYPE in config.h!"
 		#elif DRIVE_TYPE == DRIVE_TANK
