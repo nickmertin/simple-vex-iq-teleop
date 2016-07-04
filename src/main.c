@@ -26,6 +26,9 @@
 #define CLAMP(x, min, max)																MAX(MIN(x, max), min)
 #define SIGN(x)																						((x > 0) - (0 > x))
 
+// Control macros
+#define CONDITIONAL(c, o)																	if (c) { o }
+
 // Options for DRIVE_TYPE
 #define DRIVE_TANK																				0
 #define DRIVE_X																						1
@@ -52,6 +55,7 @@
 
 // Macros to enable Touch LED usage
 #define TOUCH_LED_DIRECTION_BASED(n)											setTouchLEDColor(DEVICE(n), direction_sign ? (direction_sign == 1 ? colorGreen : colorRed) : colorYellow);
+#define TOUCH_LED_BLINK(n, color1, color2)								setTouchLEDColor(DEVICE(n), (i % 2) ? color1, color2);
 
 ///////////////////////
 // Main control code //
@@ -60,7 +64,7 @@
 task main()
 {
 	int direction_sign = 0;
-	while (true) {
+	for (int i = 0; ; ++i) {
 		// This file should contain current configuration information, created using macros defined above
 		#include "config.h"
 		#ifndef DRIVE_TYPE
