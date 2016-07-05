@@ -140,6 +140,6 @@ task main()
 		#else
 			#error "Unknown value for DRIVE_TYPE!"
 		#endif
-		sleep(50 - nPgmTime % 50);
+		sleep(10 - nPgmTime % 10);
 	}
 }
