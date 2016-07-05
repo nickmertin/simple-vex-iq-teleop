@@ -29,7 +29,7 @@
 #define MAX(x, y)																					(x > y ? x : y)
 #define MIN(x, y)																					(x < y ? x : y)
 #define CLAMP(x, min, max)																MAX(MIN(x, max), min)
-#define SIGN(x)																						((x > 0) - (0 > x))
+#define SIGN(x)																						sgn(x)
 #define BUTTON(id)																				vexRT[Btn##id]
 
 // Control macros
@@ -71,6 +71,9 @@
 #define DRIVE_TRIPLE_INPUT_AXIAL_JOYSTICK(joy)						TVexJoysticks joy_axial = JOYSTICK(joy);
 #define DRIVE_TRIPLE_INPUT_STRAFE_JOYSTICK(joy)						TVexJoysticks joy_strafe = JOYSTICK(joy);
 #define DRIVE_TRIPLE_INPUT_ROTATION_JOYSTICK(joy)					TVexJoysticks joy_rotation = JOYSTICK(joy);
+
+// Macros to set position of motors
+#define POSITION_SET(n, pos)															setServoTarget(n, pos);
 
 // Macros to enable Touch LED usage
 #define TOUCH_LED_SOLID(n, color)													setTouchLEDColor(DEVICE(n), color);
