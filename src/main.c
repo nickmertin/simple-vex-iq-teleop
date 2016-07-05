@@ -34,6 +34,9 @@
 // Control macros
 #define CONDITIONAL(c, o)																	if (c) { o }
 
+// Low-level i/o macros
+#define SET_MOTOR(n, value)																MOTOR_OUT(n) value;
+
 // Options for DRIVE_TYPE
 #define DRIVE_NONE																				0
 #define DRIVE_TANK																				1
@@ -71,7 +74,7 @@
 // Macros to enable Touch LED usage
 #define TOUCH_LED_DIRECTION_BASED(n)											setTouchLEDColor(DEVICE(n), direction_sign ? (direction_sign == 1 ? colorGreen : colorRed) : colorYellow);
 #define TOUCH_LED_BLINK(n, color1, color2)								setTouchLEDColor(DEVICE(n), (i % 2) ? color1 : color2);
-#define TOUCH_LED_CYCLE(n, time)													{ static unsigned long rgb_##n; \
+#define TOUCH_LED_CYCLE(n, time)													{ static int rgb_##n; \
 																													if (i >= rgb_##n) { nextColor(DEVICE(n)); rgb_##n = i + time; } }
 
 // Macros to enable ultrasonic sensor usage
@@ -137,6 +140,6 @@ task main()
 		#else
 			#error "Unknown value for DRIVE_TYPE!"
 		#endif
-		sleep(50 - nPgmTime % 50);
+		sleep(10 - nPgmTime % 10);
 	}
 }
