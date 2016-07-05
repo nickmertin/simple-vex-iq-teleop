@@ -69,6 +69,9 @@
 // Macros to enable ultrasonic sensor usage
 #define ULTRASONIC(n, name)																int name = getDistanceValue(DEVICE(n));
 
+// Macros to enable gyroscopic sensor usage
+#define GYROSCOPE(n, name)																float name = getGyroDegreesFloat(DEVICE(n));
+
 ///////////////////////
 // Main control code //
 ///////////////////////
