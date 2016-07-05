@@ -29,7 +29,7 @@
 #define MAX(x, y)																					(x > y ? x : y)
 #define MIN(x, y)																					(x < y ? x : y)
 #define CLAMP(x, min, max)																MAX(MIN(x, max), min)
-#define SIGN(x)																						((x > 0) - (0 > x))
+#define SIGN(x)																						sgn(x)
 #define BUTTON(id)																				vexRT[Btn##id]
 
 // Control macros
