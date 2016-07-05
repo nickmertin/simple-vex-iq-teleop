@@ -76,6 +76,7 @@
 #define TOUCH_LED_SOLID(n, color)													setTouchLEDColor(DEVICE(n), color);
 #define TOUCH_LED_DIRECTION_BASED(n)											setTouchLEDColor(DEVICE(n), direction_sign ? (direction_sign == 1 ? colorGreen : colorRed) : colorYellow);
 #define TOUCH_LED_BLINK(n, color1, color2)								setTouchLEDColor(DEVICE(n), (i % 2) ? color1 : color2);
+#define TOUCH_LED_BLINK3(n, color1, color2, color3)				setTouchLEDColor(DEVICE(n), !(i % 3) ? color1 : (i % 3) == 1 ? color2 : color3);
 #define TOUCH_LED_CYCLE(n, time)													{ static int rgb_##n; \
 																													if (i >= rgb_##n) { nextColor(DEVICE(n)); rgb_##n = i + time; } }
 
