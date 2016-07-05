@@ -35,9 +35,10 @@
 #define CONDITIONAL(c, o)																	if (c) { o }
 
 // Options for DRIVE_TYPE
-#define DRIVE_TANK																				0
-#define DRIVE_X																						1
-#define DRIVE_TRIPLE																			2
+#define DRIVE_NONE																				0
+#define DRIVE_TANK																				1
+#define DRIVE_X																						2
+#define DRIVE_TRIPLE																			3
 
 // Options for DRIVE_TANK_INPUT_TYPE
 #define DRIVE_TANK_INPUT_SIMPLE														0
@@ -98,6 +99,8 @@ task main()
 		#include "config.h"
 		#ifndef DRIVE_TYPE
 			#error "Drive type must be specified by defining DRIVE_TYPE in config.h!"
+		#elif DRIVE_TYPE == DRIVE_NONE
+			#warn "No drive configured!"
 		#elif DRIVE_TYPE == DRIVE_TANK
 			#ifndef DRIVE_TANK_INPUT_TYPE
 				#error "Input type must be specified by defining DRIVE_TANK_INPUT_TYPE in config.h!"
