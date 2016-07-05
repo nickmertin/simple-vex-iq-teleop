@@ -34,6 +34,9 @@
 // Control macros
 #define CONDITIONAL(c, o)																	if (c) { o }
 
+// Low-level i/o macros
+#define SET_MOTOR(n, value)																MOTOR_OUT(n) value;
+
 // Options for DRIVE_TYPE
 #define DRIVE_NONE																				0
 #define DRIVE_TANK																				1
