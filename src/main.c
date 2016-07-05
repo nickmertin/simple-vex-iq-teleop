@@ -84,10 +84,9 @@
 #define GYROSCOPE(n, name)																float name = getGyroDegreesFloat(DEVICE(n));
 
 // Macros for PID controller
-#define PID(kP, kI, kD, error, name)											const float name##_kP = kP, name##_kI = kI, name##_kD = kD; \
-																													static float name##_last = 0, name##_sum = 0; \
-																													float name = kP * error + kI * (name##_sum += error) + kD * (error - name##_last); \
-																													name##_last = error;
+#define PID(kP, kI, kD, error, name)											{ static float name##_last = 0, name##_sum = 0; \
+																													float name = (kP) * error + (kI) * (name##_sum += error) + (kD) * (error - name##_last); \
+																													name##_last = error; }
 
 ///////////////////////
 // Main control code //
