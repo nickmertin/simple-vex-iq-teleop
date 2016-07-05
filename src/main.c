@@ -30,6 +30,7 @@
 #define MIN(x, y)																					(x < y ? x : y)
 #define CLAMP(x, min, max)																MAX(MIN(x, max), min)
 #define SIGN(x)																						((x > 0) - (0 > x))
+#define BUTTON(id)																				vexRT[Btn##id]
 
 // Control macros
 #define CONDITIONAL(c, o)																	if (c) { o }
