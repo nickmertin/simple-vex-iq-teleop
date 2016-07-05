@@ -112,9 +112,9 @@ task main()
 			rotation_sign = SIGN(x_rotation);
 		#elif DRIVE_TYPE == DRIVE_TRIPLE
 			sbyte triple_axial = vexRT[joy_axial], triple_strafe = vexRT[joy_strafe], triple_rotation = vexRT[joy_rotation];
-			motor[triple_back] = triple_rotation - triple_strafe;
-			motor[triple_left] = triple_rotation + triple_axial + triple_strafe;
-			motor[triple_right] = triple_rotation - triple_axial + triple_strafe;
+			motor[triple_back] = CLAMP(triple_rotation - triple_strafe, -127, 127);
+			motor[triple_left] = CLAMP(triple_rotation + triple_axial + triple_strafe, -127, 127);
+			motor[triple_right] = CLAMP(triple_rotation - triple_axial + triple_strafe, -127, 127);
 		#else
 			#error "Unknown value for DRIVE_TYPE!"
 		#endif
