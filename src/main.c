@@ -74,7 +74,8 @@
 // Macros to enable Touch LED usage
 #define TOUCH_LED_DIRECTION_BASED(n)											setTouchLEDColor(DEVICE(n), direction_sign ? (direction_sign == 1 ? colorGreen : colorRed) : colorYellow);
 #define TOUCH_LED_BLINK(n, color1, color2)								setTouchLEDColor(DEVICE(n), (i % 2) ? color1 : color2);
-#define TOUCH_LED_CYCLE(n, time)													if (i >= RGBTimes[DEVICE(n)]) { nextColor(DEVICE(n)); RGBTimes[DEVICE(n)] = i + time; }
+#define TOUCH_LED_CYCLE(n, time)													{ static unsigned long rgb_##n; \
+																													if (i >= rgb_##n) { nextColor(DEVICE(n)); rgb_##n = i + time; } }
 
 // Macros to enable ultrasonic sensor usage
 #define ULTRASONIC(n, name)																int name = getDistanceValue(DEVICE(n));
@@ -94,8 +95,6 @@
 
 task main()
 {
-	unsigned long RGBTimes[kNumbOfTotalSensors];
-	memset(RGBTimes, 0, sizeof(RGBTimes));
 	int direction_sign = 0, rotation_sign = 0;
 	for (int i = 0; ; ++i) {
 		// This file should contain current configuration information, created using macros defined above
