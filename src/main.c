@@ -72,6 +72,9 @@
 #define DRIVE_TRIPLE_INPUT_STRAFE_JOYSTICK(joy)						TVexJoysticks joy_strafe = JOYSTICK(joy);
 #define DRIVE_TRIPLE_INPUT_ROTATION_JOYSTICK(joy)					TVexJoysticks joy_rotation = JOYSTICK(joy);
 
+// Macros to set position of motors
+#define POSITION_SET(n, pos)															setServoTarget(n, pos);
+
 // Macros to enable Touch LED usage
 #define TOUCH_LED_SOLID(n, color)													setTouchLEDColor(DEVICE(n), color);
 #define TOUCH_LED_DIRECTION_BASED(n)											setTouchLEDColor(DEVICE(n), direction_sign ? (direction_sign == 1 ? colorGreen : colorRed) : colorYellow);
