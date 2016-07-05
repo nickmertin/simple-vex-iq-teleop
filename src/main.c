@@ -91,7 +91,7 @@
 task main()
 {
 	unsigned long RGBTimes[kNumbOfTotalSensors];
-	memset(RGBTimes, 0, kNumbOfTotalSensors);
+	memset(RGBTimes, 0, sizeof(RGBTimes));
 	int direction_sign = 0, rotation_sign = 0;
 	for (int i = 0; ; ++i) {
 		// This file should contain current configuration information, created using macros defined above
