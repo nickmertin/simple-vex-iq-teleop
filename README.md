@@ -21,3 +21,7 @@ Contain fixes to previosuly written code that need to be applied independently t
 ### sample-config-* branches
 
 Split-offs from master branch that add sample contents to config.h
+
+### variation-* branches
+
+Actual in-use configurations
