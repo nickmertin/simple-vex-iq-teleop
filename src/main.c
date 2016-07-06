@@ -74,6 +74,13 @@
 
 // Macros to set position of motors
 #define POSITION_SET(n, pos)															setServoTarget(n, pos);
+#define POSITION_RESET(m, p, dir)														if (!i) { \
+																														m dir 127; \
+																														while (getMotorSpeed(p)) \
+																															sleep(10); \
+																														m dir 0; \
+																														sleep(100); \
+																													}
 
 // Macros to enable Touch LED usage
 #define TOUCH_LED_SOLID(n, color)													setTouchLEDColor(DEVICE(n), color);
