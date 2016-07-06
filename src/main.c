@@ -76,8 +76,10 @@
 #define POSITION_GET(n)																		getServoEncoder(n);
 #define POSITION_SET(n, pos)															setServoTarget(n, pos);
 #define POSITION_MAINTAIN(n1, n2, sign)										{ static int offset_##n1 = 0; \
-																														POSITION_SET(n1, offset_##n1 - POSITION_GET(n2)); \
+																														POSITION_SET(n1, offset_##n1 sign POSITION_GET(n2)); \
 																													}
+#define POSITION_MAINTAIN_INC(n)													++offset_##n;
+#define POSITION_MAINTAIN_DEC(n)													--offset_##n;
 #define POSITION_RESET(m, p, dir)													if (!i) { \
 																														m dir 127; \
 																														SetMotorBrakeMode(MOTOR(p), motorCoast); \
