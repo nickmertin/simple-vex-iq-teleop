@@ -76,7 +76,7 @@
 #define POSITION_GET(n)																		getServoEncoder(MOTOR(n));
 #define POSITION_SET(n, pos)															setServoTarget(MOTOR(n), pos);
 #define POSITION_MAINTAIN(n1, n2, sign)										static int offset_##n1 = 0; \
-																													POSITION_SET(MOTOR(n1), offset_##n1 sign getServoEncoder(MOTOR(n2)))
+																													POSITION_SET(n1, offset_##n1 sign getServoEncoder(MOTOR(n2)))
 #define POSITION_MAINTAIN_INC(n)													++offset_##n;
 #define POSITION_MAINTAIN_DEC(n)													--offset_##n;
 #define POSITION_RESET(m, p, dir)													if (!i) { \
