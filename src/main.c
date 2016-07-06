@@ -16,6 +16,11 @@
 //////////////////
 #include "color.c"
 
+////////////////////////////
+// Fancy position control //
+////////////////////////////
+#include "position-control.c"
+
 ////////////////////////////////
 // Macros for use in config.h //
 ////////////////////////////////
@@ -74,6 +79,7 @@
 
 // Macros to set position of motors
 #define POSITION_SET(n, pos)															setServoTarget(n, pos);
+#define POSITION_RESET(n, dir)														static int reset_dummy_##n = position_reset(n, dir 127);
 
 // Macros to enable Touch LED usage
 #define TOUCH_LED_SOLID(n, color)													setTouchLEDColor(DEVICE(n), color);
