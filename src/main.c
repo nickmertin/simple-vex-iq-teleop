@@ -77,6 +77,8 @@
 #define POSITION_RESET(m, p, dir)														if (!i) { \
 																														m dir 127; \
 																														sleep(100); \
+																														while (getMotorZeroVelocity(p)) \
+																															sleep(10); \
 																														while (!getMotorZeroVelocity(p)) \
 																															sleep(10); \
 																														m dir 0; \
