@@ -74,17 +74,17 @@
 
 // Macros to set position of motors
 #define POSITION_SET(n, pos)															setServoTarget(n, pos);
-#define POSITION_RESET(n, dir)														if (!i) { \
-																														MOTOR_OUT(n) dir 127; \
-																														SetMotorBrakeMode(MOTOR(n), motorCoast); \
+#define POSITION_RESET(m, p, dir)													if (!i) { \
+																														m dir 127; \
+																														SetMotorBrakeMode(MOTOR(p), motorCoast); \
 																														sleep(100); \
-																														while (getMotorZeroVelocity(MOTOR(n))) \
+																														while (getMotorZeroVelocity(MOTOR(p))) \
 																															sleep(10); \
-																														while (!getMotorZeroVelocity(MOTOR(n))) \
+																														while (!getMotorZeroVelocity(MOTOR(p))) \
 																															sleep(10); \
-																														MOTOR_OUT(n) dir 0; \
+																														m dir 0; \
 																														sleep(100); \
-																														setMotorBrakeMode(MOTOR(n), motorHold); \
+																														setMotorBrakeMode(MOTOR(p), motorHold); \
 																													}
 
 // Macros to enable Touch LED usage
