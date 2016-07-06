@@ -77,7 +77,8 @@
 #define POSITION_SET(n, pos)															setServoTarget(n, pos);
 #define POSITION_RESET(m, p, dir)														if (!i) { \
 																														m dir 127; \
-																														while (getMotorSpeed(p)) \
+																														sleep(100); \
+																														while (!getMotorZeroVelocity(p)) \
 																															sleep(10); \
 																														m dir 0; \
 																														sleep(100); \
