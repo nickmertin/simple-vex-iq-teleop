@@ -73,7 +73,7 @@
 #define DRIVE_TRIPLE_INPUT_ROTATION_JOYSTICK(joy)					TVexJoysticks joy_rotation = JOYSTICK(joy);
 
 // Macros to set position of motors
-#define POSITION_GET(n)																		getServoEncoder(MOTOR(n));
+#define POSITION_GET(n)																		getServoEncoder(MOTOR(n))
 #define POSITION_SET(n, pos)															setServoTarget(MOTOR(n), pos);
 #define POSITION_MAINTAIN(n1, n2, sign)										static int offset_##n1 = 0; \
 																													POSITION_SET(n1, offset_##n1 sign getServoEncoder(MOTOR(n2)))
