@@ -81,7 +81,7 @@
 #define POSITION_MAINTAIN_INC(n)													++offset_##n;
 #define POSITION_MAINTAIN_DEC(n)													--offset_##n;
 #define POSITION_RESET(m, p, dir)													if (!i) { \
-																														m dir 127; \
+																														m dir 100; \
 																														SetMotorBrakeMode(MOTOR(p), motorCoast); \
 																														sleep(100); \
 																														while (getMotorZeroVelocity(MOTOR(p))) \
@@ -133,7 +133,7 @@ task main()
 				sbyte tank_left = JOY_VALUE(joy_left), tank_right = JOY_VALUE(joy_right);
 			#elif DRIVE_TANK_INPUT_TYPE == DRIVE_TANK_INPUT_COMPLEX
 				sbyte tank_speed = JOY_VALUE(joy_speed), tank_direction = JOY_VALUE(joy_direction);
-				sbyte tank_left = CLAMP(tank_speed + tank_direction, -127, 127), tank_right = CLAMP(tank_speed - tank_direction, -127, 127);
+				sbyte tank_left = CLAMP(tank_speed + tank_direction, -100, 100), tank_right = CLAMP(tank_speed - tank_direction, -100, 100);
 			#endif
 			direction_sign = SIGN(tank_left + tank_right);
 			rotation_sign = SIGN(tank_left - tank_right);
@@ -149,17 +149,17 @@ task main()
 			#endif
 		#elif DRIVE_TYPE == DRIVE_X
 			sbyte x_axial = JOY_VALUE(joy_axial), x_strafe = JOY_VALUE(joy_strafe), x_rotation = JOY_VALUE(joy_rotation);
-			motor[x_fl] = CLAMP(x_rotation + x_strafe + x_axial, -127, 127);
-			motor[x_fr] = CLAMP(x_rotation + x_strafe - x_axial, -127, 127);
-			motor[x_bl] = CLAMP(x_rotation - x_strafe + x_axial, -127, 127);
-			motor[x_br] = CLAMP(x_rotation - x_strafe - x_axial, -127, 127);
+			motor[x_fl] = CLAMP(x_rotation + x_strafe + x_axial, -100, 100);
+			motor[x_fr] = CLAMP(x_rotation + x_strafe - x_axial, -100, 100);
+			motor[x_bl] = CLAMP(x_rotation - x_strafe + x_axial, -100, 100);
+			motor[x_br] = CLAMP(x_rotation - x_strafe - x_axial, -100, 100);
 			direction_sign = SIGN(x_axial);
 			rotation_sign = SIGN(x_rotation);
 		#elif DRIVE_TYPE == DRIVE_TRIPLE
 			sbyte triple_axial = JOY_VALUE(joy_axial), triple_strafe = JOY_VALUE(joy_strafe), triple_rotation = JOY_VALUE(joy_rotation);
-			motor[triple_back] = CLAMP(triple_rotation - triple_strafe, -127, 127);
-			motor[triple_left] = CLAMP(triple_rotation + triple_axial + triple_strafe, -127, 127);
-			motor[triple_right] = CLAMP(triple_rotation - triple_axial + triple_strafe, -127, 127);
+			motor[triple_back] = CLAMP(triple_rotation - triple_strafe, -100, 100);
+			motor[triple_left] = CLAMP(triple_rotation + triple_axial + triple_strafe, -100, 100);
+			motor[triple_right] = CLAMP(triple_rotation - triple_axial + triple_strafe, -100, 100);
 		#else
 			#error "Unknown value for DRIVE_TYPE!"
 		#endif
