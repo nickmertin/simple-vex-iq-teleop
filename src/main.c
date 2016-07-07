@@ -31,6 +31,7 @@
 #define CLAMP(x, min, max)																MAX(MIN(x, max), min)
 #define SIGN(x)																						sgn(x)
 #define BUTTON(id)																				vexRT[Btn##id]
+#define JOY_VALUE(j)																			(abs(vexRT[j]) > 15 ? vexRT[j] : 0)
 
 // Control macros
 #define CONDITIONAL(c, o)																	if (c) { o }
@@ -73,7 +74,24 @@
 #define DRIVE_TRIPLE_INPUT_ROTATION_JOYSTICK(joy)					TVexJoysticks joy_rotation = JOYSTICK(joy);
 
 // Macros to set position of motors
-#define POSITION_SET(n, pos)															setServoTarget(n, pos);
+#define POSITION_GET(n)																		getServoEncoder(MOTOR(n));
+#define POSITION_SET(n, pos)															setServoTarget(MOTOR(n), pos);
+#define POSITION_MAINTAIN(n1, n2, sign)										static int offset_##n1 = 0; \
+																													POSITION_SET(n1, offset_##n1 sign getServoEncoder(MOTOR(n2)))
+#define POSITION_MAINTAIN_INC(n)													++offset_##n;
+#define POSITION_MAINTAIN_DEC(n)													--offset_##n;
+#define POSITION_RESET(m, p, dir)													if (!i) { \
+																														m dir 127; \
+																														SetMotorBrakeMode(MOTOR(p), motorCoast); \
+																														sleep(100); \
+																														while (getMotorZeroVelocity(MOTOR(p))) \
+																															sleep(10); \
+																														while (!getMotorZeroVelocity(MOTOR(p))) \
+																															sleep(10); \
+																														m dir 0; \
+																														sleep(100); \
+																														setMotorBrakeMode(MOTOR(p), motorHold); \
+																													}
 
 // Macros to enable Touch LED usage
 #define TOUCH_LED_SOLID(n, color)													setTouchLEDColor(DEVICE(n), color);
@@ -112,9 +130,9 @@ task main()
 			#ifndef DRIVE_TANK_INPUT_TYPE
 				#error "Input type must be specified by defining DRIVE_TANK_INPUT_TYPE in config.h!"
 			#elif DRIVE_TANK_INPUT_TYPE == DRIVE_TANK_INPUT_SIMPLE
-				sbyte tank_left = vexRT[joy_left], tank_right = vexRT[joy_right];
+				sbyte tank_left = JOY_VALUE(joy_left), tank_right = JOY_VALUE(joy_right);
 			#elif DRIVE_TANK_INPUT_TYPE == DRIVE_TANK_INPUT_COMPLEX
-				sbyte tank_speed = vexRT[joy_speed], tank_direction = vexRT[joy_direction];
+				sbyte tank_speed = JOY_VALUE(joy_speed), tank_direction = JOY_VALUE(joy_direction);
 				sbyte tank_left = CLAMP(tank_speed + tank_direction, -127, 127), tank_right = CLAMP(tank_speed - tank_direction, -127, 127);
 			#endif
 			direction_sign = SIGN(tank_left + tank_right);
@@ -130,7 +148,7 @@ task main()
 				DRIVE_TANK_RIGHT -tank_right;
 			#endif
 		#elif DRIVE_TYPE == DRIVE_X
-			sbyte x_axial = vexRT[joy_axial], x_strafe = vexRT[joy_strafe], x_rotation = vexRT[joy_rotation];
+			sbyte x_axial = JOY_VALUE(joy_axial), x_strafe = JOY_VALUE(joy_strafe), x_rotation = JOY_VALUE(joy_rotation);
 			motor[x_fl] = CLAMP(x_rotation + x_strafe + x_axial, -127, 127);
 			motor[x_fr] = CLAMP(x_rotation + x_strafe - x_axial, -127, 127);
 			motor[x_bl] = CLAMP(x_rotation - x_strafe + x_axial, -127, 127);
@@ -138,7 +156,7 @@ task main()
 			direction_sign = SIGN(x_axial);
 			rotation_sign = SIGN(x_rotation);
 		#elif DRIVE_TYPE == DRIVE_TRIPLE
-			sbyte triple_axial = vexRT[joy_axial], triple_strafe = vexRT[joy_strafe], triple_rotation = vexRT[joy_rotation];
+			sbyte triple_axial = JOY_VALUE(joy_axial), triple_strafe = JOY_VALUE(joy_strafe), triple_rotation = JOY_VALUE(joy_rotation);
 			motor[triple_back] = CLAMP(triple_rotation - triple_strafe, -127, 127);
 			motor[triple_left] = CLAMP(triple_rotation + triple_axial + triple_strafe, -127, 127);
 			motor[triple_right] = CLAMP(triple_rotation - triple_axial + triple_strafe, -127, 127);
