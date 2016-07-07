@@ -130,9 +130,9 @@ task main()
 			#ifndef DRIVE_TANK_INPUT_TYPE
 				#error "Input type must be specified by defining DRIVE_TANK_INPUT_TYPE in config.h!"
 			#elif DRIVE_TANK_INPUT_TYPE == DRIVE_TANK_INPUT_SIMPLE
-				sbyte tank_left = vexRT[joy_left], tank_right = vexRT[joy_right];
+				sbyte tank_left = JOY_VALUE(joy_left), tank_right = JOY_VALUE(joy_right);
 			#elif DRIVE_TANK_INPUT_TYPE == DRIVE_TANK_INPUT_COMPLEX
-				sbyte tank_speed = vexRT[joy_speed], tank_direction = vexRT[joy_direction];
+				sbyte tank_speed = JOY_VALUE(joy_speed), tank_direction = JOY_VALUE(joy_direction);
 				sbyte tank_left = CLAMP(tank_speed + tank_direction, -127, 127), tank_right = CLAMP(tank_speed - tank_direction, -127, 127);
 			#endif
 			direction_sign = SIGN(tank_left + tank_right);
@@ -148,7 +148,7 @@ task main()
 				DRIVE_TANK_RIGHT -tank_right;
 			#endif
 		#elif DRIVE_TYPE == DRIVE_X
-			sbyte x_axial = vexRT[joy_axial], x_strafe = vexRT[joy_strafe], x_rotation = vexRT[joy_rotation];
+			sbyte x_axial = JOY_VALUE(joy_axial), x_strafe = JOY_VALUE(joy_strafe), x_rotation = JOY_VALUE(joy_rotation);
 			motor[x_fl] = CLAMP(x_rotation + x_strafe + x_axial, -127, 127);
 			motor[x_fr] = CLAMP(x_rotation + x_strafe - x_axial, -127, 127);
 			motor[x_bl] = CLAMP(x_rotation - x_strafe + x_axial, -127, 127);
@@ -156,7 +156,7 @@ task main()
 			direction_sign = SIGN(x_axial);
 			rotation_sign = SIGN(x_rotation);
 		#elif DRIVE_TYPE == DRIVE_TRIPLE
-			sbyte triple_axial = vexRT[joy_axial], triple_strafe = vexRT[joy_strafe], triple_rotation = vexRT[joy_rotation];
+			sbyte triple_axial = JOY_VALUE(joy_axial), triple_strafe = JOY_VALUE(joy_strafe), triple_rotation = JOY_VALUE(joy_rotation);
 			motor[triple_back] = CLAMP(triple_rotation - triple_strafe, -127, 127);
 			motor[triple_left] = CLAMP(triple_rotation + triple_axial + triple_strafe, -127, 127);
 			motor[triple_right] = CLAMP(triple_rotation - triple_axial + triple_strafe, -127, 127);
