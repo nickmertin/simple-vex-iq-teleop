@@ -94,6 +94,15 @@
 																													}
 #define POSITION_ADJUST(n, amount)												POSITION_SET(n, POSITION_GET(n) + (amount))
 
+// Macros to set speed of motors
+#define TARGET_SPEED_GET(n)																target_speed_##n
+#define TARGET_SPEED_SET(n, s)														target_speed_##n = s;
+#define TARGET_SPEED_MAINTAIN(n)													static int target_speed_##n = 0, target_last_enc_##n = 0; \
+																													{ int current = getMotorEncoder(MOTOR(n)); \
+																														MOTOR_OUT(n) SIGN(current - target_last_enc_##n) * 100; \
+																														target_last_enc_##n = current; \
+																													}
+
 // Macros to enable Touch LED usage
 #define TOUCH_LED_SOLID(n, color)													setTouchLEDColor(DEVICE(n), color);
 #define TOUCH_LED_DIRECTION_BASED(n)											setTouchLEDColor(DEVICE(n), direction_sign ? (direction_sign == 1 ? colorGreen : colorRed) : colorYellow);
