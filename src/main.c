@@ -97,6 +97,7 @@
 // Macros to set speed of motors
 #define TARGET_SPEED_GET(n)																target_speed_##n
 #define TARGET_SPEED_SET(n, s)														target_speed_##n = s;
+#define TARGET_SPEED_ALTER(n, s)													TARGET_SPEED_SET(n, TARGET_SPEED_GET(n) + (s))
 #define TARGET_SPEED_MAINTAIN(n)													static int target_speed_##n = 0, target_last_enc_##n = 0; \
 																													{ int current = getMotorEncoder(MOTOR(n)); \
 																														MOTOR_OUT(n) SIGN(current - target_last_enc_##n) * 100; \
