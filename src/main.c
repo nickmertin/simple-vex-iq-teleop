@@ -116,7 +116,7 @@
 // Macros for data logger
 #define LOG_MOTOR(n)																			{ static unsigned long last_##n = 0; \
 																														unsigned long cur_##n = getMotorEncoder(MOTOR(n)); \
-																														writeDebugStreamLine("Motor %d: %d mA, %d RPM", n, getMotorCurrent(MOTOR(n)), cur_##n - last_##n); \
+																														writeDebugStream(",%d,%d,%d", n, getMotorCurrent(MOTOR(n)), cur_##n - last_##n); \
 																													}
 
 ///////////////////////
@@ -127,7 +127,7 @@ task main()
 {
 	int direction_sign = 0, rotation_sign = 0;
 	for (int i = 0; ; ++i) {
-		writeDebugStreamLine("Cycle %d", i);
+		writeDebugStream("%d,%d", i, nImmediateBatteryLevel);
 		// This file should contain current configuration information, created using macros defined above
 		#include "config.h"
 		#ifndef DRIVE_TYPE
@@ -171,6 +171,7 @@ task main()
 		#else
 			#error "Unknown value for DRIVE_TYPE!"
 		#endif
+		writeDebugStreamLine("");
 		sleep(10 - nPgmTime % 10);
 	}
 }
