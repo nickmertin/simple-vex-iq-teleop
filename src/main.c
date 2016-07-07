@@ -113,6 +113,12 @@
 																													float name = (kP) * error + (kI) * (name##_sum += error) + (kD) * (error - name##_last); \
 																													name##_last = error; }
 
+// Macros for data logger
+#define LOG_MOTOR(n)																			{ static unsigned long last_##n = 0; \
+																														unsigned long cur_##n = getMotorEncoder(MOTOR(n)); \
+																														writeDebugStreamLine("Motor %d: %d mA, %d RPM", n, getMotorCurrent(MOTOR(n)), cur_##n - last_##n); \
+																													}
+
 ///////////////////////
 // Main control code //
 ///////////////////////
@@ -121,6 +127,7 @@ task main()
 {
 	int direction_sign = 0, rotation_sign = 0;
 	for (int i = 0; ; ++i) {
+		writeDebugStreamLine("Cycle %d", i);
 		// This file should contain current configuration information, created using macros defined above
 		#include "config.h"
 		#ifndef DRIVE_TYPE
