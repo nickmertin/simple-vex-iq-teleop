@@ -31,6 +31,7 @@
 #define CLAMP(x, min, max)																MAX(MIN(x, max), min)
 #define SIGN(x)																						sgn(x)
 #define BUTTON(id)																				vexRT[Btn##id]
+#define JOY_VALUE(j)																			(abs(vexRT[j]) > 15 ? vexRT[j] : 0)
 
 // Control macros
 #define CONDITIONAL(c, o)																	if (c) { o }
