@@ -16,6 +16,74 @@
 //////////////////
 #include "color.c"
 
+///////////////////////
+// Utility Functions //
+///////////////////////
+bool button_down_RUp()
+{
+	static bool down_RUp = false;
+	bool value = vexRT[BtnRUp];
+	bool result = value && !down_RUp;
+	down_RUp = value;
+	return result;
+}
+bool button_down_LUp()
+{
+	static bool down_LUp = false;
+	bool value = vexRT[BtnLUp];
+	bool result = value && !down_LUp;
+	down_LUp = value;
+	return result;
+}
+bool button_down_EUp()
+{
+	static bool down_EUp = false;
+	bool value = vexRT[BtnEUp];
+	bool result = value && !down_EUp;
+	down_EUp = value;
+	return result;
+}
+bool button_down_FUp()
+{
+	static bool down_FUp = false;
+	bool value = vexRT[BtnFUp];
+	bool result = value && !down_FUp;
+	down_FUp = value;
+	return result;
+}
+bool button_down_RDown()
+{
+	static bool down_RDown = false;
+	bool value = vexRT[BtnRDown];
+	bool result = value && !down_RDown;
+	down_RDown = value;
+	return result;
+}
+bool button_down_LDown()
+{
+	static bool down_LDown = false;
+	bool value = vexRT[BtnLDown];
+	bool result = value && !down_LDown;
+	down_LDown = value;
+	return result;
+}
+bool button_down_EDown()
+{
+	static bool down_EDown = false;
+	bool value = vexRT[BtnEDown];
+	bool result = value && !down_EDown;
+	down_EDown = value;
+	return result;
+}
+bool button_down_FDown()
+{
+	static bool down_FDown = false;
+	bool value = vexRT[BtnFDown];
+	bool result = value && !down_FDown;
+	down_FDown = value;
+	return result;
+}
+
 ////////////////////////////////
 // Macros for use in config.h //
 ////////////////////////////////
@@ -31,6 +99,8 @@
 #define CLAMP(x, min, max)																MAX(MIN(x, max), min)
 #define SIGN(x)																						sgn(x)
 #define BUTTON(id)																				vexRT[Btn##id]
+#define BUTTON_DOWN(id)																		button_down_##id ()
+
 #define JOY_VALUE(j)																			(abs(vexRT[j]) > 15 ? vexRT[j] : 0)
 
 // Control macros
