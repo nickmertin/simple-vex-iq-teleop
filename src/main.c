@@ -100,6 +100,7 @@ bool button_down_FDown()
 #define SIGN(x)																						sgn(x)
 #define BUTTON(id)																				vexRT[Btn##id]
 #define BUTTON_DOWN(id)																		button_down_##id ()
+#define INIT(x)																						if (!i) { x }
 
 #define JOY_VALUE(j)																			(abs(vexRT[j]) > 15 ? vexRT[j] : 0)
 
