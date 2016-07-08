@@ -92,6 +92,7 @@
 																														setMotorBrakeMode(MOTOR(p), motorHold); \
 																													}
 #define POSITION_ADJUST(n, amount)												POSITION_SET(n, POSITION_GET(n) + (amount))
+#define BRAKE_MODE(n, mode)																SetMotorBrakeMode(MOTOR(n), motor##mode);
 
 // Macros to enable Touch LED usage
 #define TOUCH_LED_SOLID(n, color)													setTouchLEDColor(DEVICE(n), color);
