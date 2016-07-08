@@ -103,6 +103,7 @@
 																														MOTOR_OUT(n) (abs(current - target_last_enc_##n) < abs(target_speed_##n)) * SIGN(target_speed_##n) * 100; \
 																														target_last_enc_##n = current; \
 																													}
+#define SPEED(n)																					(getMotorEncoder(MOTOR(n)) - target_last_enc##n)
 
 // Macros to enable Touch LED usage
 #define TOUCH_LED_SOLID(n, color)													setTouchLEDColor(DEVICE(n), color);
