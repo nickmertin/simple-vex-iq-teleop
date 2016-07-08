@@ -163,6 +163,7 @@ bool button_down_FDown()
 																														setMotorBrakeMode(MOTOR(p), motorHold); \
 																													}
 #define POSITION_ADJUST(n, amount)												POSITION_SET(n, POSITION_GET(n) + (amount))
+#define BRAKE_MODE(n, mode)																SetMotorBrakeMode(MOTOR(n), motor##mode);
 
 // Macros to set speed of motors
 #define TARGET_SPEED_GET(n)																target_speed_##n
