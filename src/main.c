@@ -178,6 +178,7 @@ bool button_down_FDown()
 #define SPEED(n)																					(getMotorEncoder(MOTOR(n)) - target_last_enc##n)
 
 // Macros to enable Touch LED usage
+#define TOUCH_LED_RGB(n, r, g, b)													setTouchLEDRGB(DEVICE(n), r, g, b);
 #define TOUCH_LED_SOLID(n, color)													setTouchLEDColor(DEVICE(n), color);
 #define TOUCH_LED_DIRECTION_BASED(n)											setTouchLEDColor(DEVICE(n), direction_sign ? (direction_sign == 1 ? colorGreen : colorRed) : colorYellow);
 #define TOUCH_LED_BLINK(n, color1, color2)								setTouchLEDColor(DEVICE(n), (i / 10 % 2) ? color1 : color2);
