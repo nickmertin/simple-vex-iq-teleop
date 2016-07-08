@@ -175,7 +175,7 @@ bool button_down_FDown()
 																														MOTOR_OUT(n) (abs(current - target_last_enc_##n) < abs(target_speed_##n)) * SIGN(target_speed_##n) * 100; \
 																														target_last_enc_##n = current; \
 																													}
-#define SPEED(n)																					(getMotorEncoder(MOTOR(n)) - target_last_enc##n)
+#define SPEED(n)																					(getMotorEncoder(MOTOR(n)) - target_last_enc_##n)
 
 // Macros to enable Touch LED usage
 #define TOUCH_LED_RGB(n, r, g, b)													setTouchLEDRGB(DEVICE(n), r, g, b);
@@ -183,7 +183,7 @@ bool button_down_FDown()
 #define TOUCH_LED_DIRECTION_BASED(n)											setTouchLEDColor(DEVICE(n), direction_sign ? (direction_sign == 1 ? colorGreen : colorRed) : colorYellow);
 #define TOUCH_LED_BLINK(n, color1, color2)								setTouchLEDColor(DEVICE(n), (i / 10 % 2) ? color1 : color2);
 #define TOUCH_LED_BLINK3(n, color1, color2, color3)				setTouchLEDColor(DEVICE(n), !(i / 10 % 3) ? color1 : (i % 3) == 1 ? color2 : color3);
-#define TOUCH_LED_REDGREEN(n, v)													TOUCH_LED_RGB(DEVICE(n), 255 - v, 0, v)
+#define TOUCH_LED_REDGREEN(n, v)													TOUCH_LED_RGB(n, 255 - v, v, 0)
 #define TOUCH_LED_CYCLE(n, time)													{ static int rgb_##n; \
 																													if (i >= rgb_##n) { nextColor(DEVICE(n)); rgb_##n = i + time; } }
 
