@@ -16,6 +16,74 @@
 //////////////////
 #include "color.c"
 
+///////////////////////
+// Utility Functions //
+///////////////////////
+bool button_down_RUp()
+{
+	static bool down_RUp = false;
+	bool value = vexRT[BtnRUp];
+	bool result = value && !down_RUp;
+	down_RUp = value;
+	return result;
+}
+bool button_down_LUp()
+{
+	static bool down_LUp = false;
+	bool value = vexRT[BtnLUp];
+	bool result = value && !down_LUp;
+	down_LUp = value;
+	return result;
+}
+bool button_down_EUp()
+{
+	static bool down_EUp = false;
+	bool value = vexRT[BtnEUp];
+	bool result = value && !down_EUp;
+	down_EUp = value;
+	return result;
+}
+bool button_down_FUp()
+{
+	static bool down_FUp = false;
+	bool value = vexRT[BtnFUp];
+	bool result = value && !down_FUp;
+	down_FUp = value;
+	return result;
+}
+bool button_down_RDown()
+{
+	static bool down_RDown = false;
+	bool value = vexRT[BtnRDown];
+	bool result = value && !down_RDown;
+	down_RDown = value;
+	return result;
+}
+bool button_down_LDown()
+{
+	static bool down_LDown = false;
+	bool value = vexRT[BtnLDown];
+	bool result = value && !down_LDown;
+	down_LDown = value;
+	return result;
+}
+bool button_down_EDown()
+{
+	static bool down_EDown = false;
+	bool value = vexRT[BtnEDown];
+	bool result = value && !down_EDown;
+	down_EDown = value;
+	return result;
+}
+bool button_down_FDown()
+{
+	static bool down_FDown = false;
+	bool value = vexRT[BtnFDown];
+	bool result = value && !down_FDown;
+	down_FDown = value;
+	return result;
+}
+
 ////////////////////////////////
 // Macros for use in config.h //
 ////////////////////////////////
@@ -31,6 +99,9 @@
 #define CLAMP(x, min, max)																MAX(MIN(x, max), min)
 #define SIGN(x)																						sgn(x)
 #define BUTTON(id)																				vexRT[Btn##id]
+#define BUTTON_DOWN(id)																		button_down_##id ()
+#define INIT(x)																						if (!i) { x }
+
 #define JOY_VALUE(j)																			(abs(vexRT[j]) > 15 ? vexRT[j] : 0)
 
 // Control macros
@@ -93,12 +164,23 @@
 																														setMotorBrakeMode(MOTOR(p), motorHold); \
 																													}
 #define POSITION_ADJUST(n, amount)												POSITION_SET(n, POSITION_GET(n) + (amount))
+#define BRAKE_MODE(n, mode)																SetMotorBrakeMode(MOTOR(n), motor##mode);
+
+// Macros to set speed of motors
+#define TARGET_SPEED_GET(n)																target_speed_##n
+#define TARGET_SPEED_SET(n, s)														target_speed_##n = s;
+#define TARGET_SPEED_ALTER(n, s)													TARGET_SPEED_SET(n, TARGET_SPEED_GET(n) + (s))
+#define TARGET_SPEED_MAINTAIN(n)													static int target_speed_##n = 0, target_last_enc_##n = 0; \
+																													{ int current = getMotorEncoder(MOTOR(n)); \
+																														MOTOR_OUT(n) (abs(current - target_last_enc_##n) < abs(target_speed_##n)) * SIGN(target_speed_##n) * 100; \
+																														target_last_enc_##n = current; \
+																													}
 
 // Macros to enable Touch LED usage
 #define TOUCH_LED_SOLID(n, color)													setTouchLEDColor(DEVICE(n), color);
 #define TOUCH_LED_DIRECTION_BASED(n)											setTouchLEDColor(DEVICE(n), direction_sign ? (direction_sign == 1 ? colorGreen : colorRed) : colorYellow);
-#define TOUCH_LED_BLINK(n, color1, color2)								setTouchLEDColor(DEVICE(n), (i % 2) ? color1 : color2);
-#define TOUCH_LED_BLINK3(n, color1, color2, color3)				setTouchLEDColor(DEVICE(n), !(i % 3) ? color1 : (i % 3) == 1 ? color2 : color3);
+#define TOUCH_LED_BLINK(n, color1, color2)								setTouchLEDColor(DEVICE(n), (i / 10 % 2) ? color1 : color2);
+#define TOUCH_LED_BLINK3(n, color1, color2, color3)				setTouchLEDColor(DEVICE(n), !(i / 10 % 3) ? color1 : (i % 3) == 1 ? color2 : color3);
 #define TOUCH_LED_CYCLE(n, time)													{ static int rgb_##n; \
 																													if (i >= rgb_##n) { nextColor(DEVICE(n)); rgb_##n = i + time; } }
 
